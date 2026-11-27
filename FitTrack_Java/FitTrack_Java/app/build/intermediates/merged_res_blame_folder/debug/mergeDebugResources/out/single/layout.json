@@ -1,98 +1,102 @@
 [
     {
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\layout_empty_state.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\layout_empty_state.xml"
+    },
+    {
         "merged": "com.fittrack.app-mergeDebugResources-43:/layout/fragment_profile.xml",
         "source": "com.fittrack.app-main-46:/layout/fragment_profile.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/dialog_add_workout.xml",
-        "source": "com.fittrack.app-main-46:/layout/dialog_add_workout.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\fragment_nutrition.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\fragment_nutrition.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/view_brand_logo.xml",
-        "source": "com.fittrack.app-main-46:/layout/view_brand_logo.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\fragment_profile.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\fragment_profile.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/activity_main.xml",
-        "source": "com.fittrack.app-main-46:/layout/activity_main.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\fragment_dashboard.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\fragment_dashboard.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/fragment_onboarding_step_basic.xml",
-        "source": "com.fittrack.app-main-46:/layout/fragment_onboarding_step_basic.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\dialog_add_weight.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\dialog_add_weight.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/fragment_login.xml",
-        "source": "com.fittrack.app-main-46:/layout/fragment_login.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\item_workout_log.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\item_workout_log.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/fragment_onboarding_step_goal.xml",
-        "source": "com.fittrack.app-main-46:/layout/fragment_onboarding_step_goal.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\fragment_login.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\fragment_login.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/fragment_workout.xml",
-        "source": "com.fittrack.app-main-46:/layout/fragment_workout.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\item_calendar_day.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\item_calendar_day.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/item_food_log.xml",
-        "source": "com.fittrack.app-main-46:/layout/item_food_log.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\fragment_progress.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\fragment_progress.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/fragment_register.xml",
-        "source": "com.fittrack.app-main-46:/layout/fragment_register.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\dialog_add_workout.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\dialog_add_workout.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/layout_empty_state.xml",
-        "source": "com.fittrack.app-main-46:/layout/layout_empty_state.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\activity_onboarding.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\activity_onboarding.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/item_calendar_day.xml",
-        "source": "com.fittrack.app-main-46:/layout/item_calendar_day.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\item_food_log.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\item_food_log.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/fragment_nutrition.xml",
-        "source": "com.fittrack.app-main-46:/layout/fragment_nutrition.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\fragment_onboarding_step_physical.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\fragment_onboarding_step_physical.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/custom_spinner_item.xml",
-        "source": "com.fittrack.app-main-46:/layout/custom_spinner_item.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\fragment_register.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\fragment_register.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/fragment_onboarding_step_physical.xml",
-        "source": "com.fittrack.app-main-46:/layout/fragment_onboarding_step_physical.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\custom_spinner_item.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\custom_spinner_item.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/activity_splash.xml",
-        "source": "com.fittrack.app-main-46:/layout/activity_splash.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\dialog_add_food.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\dialog_add_food.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/item_workout_log.xml",
-        "source": "com.fittrack.app-main-46:/layout/item_workout_log.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\activity_splash.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\activity_splash.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/dialog_add_weight.xml",
-        "source": "com.fittrack.app-main-46:/layout/dialog_add_weight.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\activity_main.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\activity_main.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/activity_auth.xml",
-        "source": "com.fittrack.app-main-46:/layout/activity_auth.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\fragment_onboarding_step_goal.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\fragment_onboarding_step_goal.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/dialog_add_food.xml",
-        "source": "com.fittrack.app-main-46:/layout/dialog_add_food.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\fragment_workout.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\fragment_workout.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/fragment_progress.xml",
-        "source": "com.fittrack.app-main-46:/layout/fragment_progress.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\custom_spinner_dropdown_item.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\custom_spinner_dropdown_item.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/custom_spinner_dropdown_item.xml",
-        "source": "com.fittrack.app-main-46:/layout/custom_spinner_dropdown_item.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\view_brand_logo.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\view_brand_logo.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/fragment_dashboard.xml",
-        "source": "com.fittrack.app-main-46:/layout/fragment_dashboard.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\fragment_onboarding_step_basic.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\fragment_onboarding_step_basic.xml"
     },
     {
-        "merged": "com.fittrack.app-mergeDebugResources-43:/layout/activity_onboarding.xml",
-        "source": "com.fittrack.app-main-46:/layout/activity_onboarding.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-mergeDebugResources-43:\\layout\\activity_auth.xml",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\activity_auth.xml"
     }
 ]

@@ -8,6 +8,7 @@ import androidx.room.EntityDeletionOrUpdateAdapter;
 import androidx.room.EntityInsertionAdapter;
 import androidx.room.RoomDatabase;
 import androidx.room.RoomSQLiteQuery;
+import androidx.room.SharedSQLiteStatement;
 import androidx.room.util.CursorUtil;
 import androidx.room.util.DBUtil;
 import androidx.sqlite.db.SupportSQLiteStatement;
@@ -31,6 +32,8 @@ public final class WeightEntryDao_Impl implements WeightEntryDao {
   private final EntityInsertionAdapter<WeightEntry> __insertionAdapterOfWeightEntry;
 
   private final EntityDeletionOrUpdateAdapter<WeightEntry> __deletionAdapterOfWeightEntry;
+
+  private final SharedSQLiteStatement __preparedStmtOfDeleteAll;
 
   public WeightEntryDao_Impl(@NonNull final RoomDatabase __db) {
     this.__db = __db;
@@ -66,6 +69,26 @@ public final class WeightEntryDao_Impl implements WeightEntryDao {
         statement.bindLong(1, entity.id);
       }
     };
+    this.__preparedStmtOfDeleteAll = new SharedSQLiteStatement(__db) {
+      @Override
+      @NonNull
+      public String createQuery() {
+        final String _query = "DELETE FROM weight_entry";
+        return _query;
+      }
+    };
+  }
+
+  @Override
+  public void insertAll(final List<WeightEntry> entries) {
+    __db.assertNotSuspendingTransaction();
+    __db.beginTransaction();
+    try {
+      __insertionAdapterOfWeightEntry.insert(entries);
+      __db.setTransactionSuccessful();
+    } finally {
+      __db.endTransaction();
+    }
   }
 
   @Override
@@ -89,6 +112,55 @@ public final class WeightEntryDao_Impl implements WeightEntryDao {
       __db.setTransactionSuccessful();
     } finally {
       __db.endTransaction();
+    }
+  }
+
+  @Override
+  public void deleteAll() {
+    __db.assertNotSuspendingTransaction();
+    final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteAll.acquire();
+    try {
+      __db.beginTransaction();
+      try {
+        _stmt.executeUpdateDelete();
+        __db.setTransactionSuccessful();
+      } finally {
+        __db.endTransaction();
+      }
+    } finally {
+      __preparedStmtOfDeleteAll.release(_stmt);
+    }
+  }
+
+  @Override
+  public List<WeightEntry> getAllOnce() {
+    final String _sql = "SELECT * FROM weight_entry ORDER BY id";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+      final int _cursorIndexOfWeightKg = CursorUtil.getColumnIndexOrThrow(_cursor, "weightKg");
+      final int _cursorIndexOfDate = CursorUtil.getColumnIndexOrThrow(_cursor, "date");
+      final List<WeightEntry> _result = new ArrayList<WeightEntry>(_cursor.getCount());
+      while (_cursor.moveToNext()) {
+        final WeightEntry _item;
+        final float _tmpWeightKg;
+        _tmpWeightKg = _cursor.getFloat(_cursorIndexOfWeightKg);
+        final String _tmpDate;
+        if (_cursor.isNull(_cursorIndexOfDate)) {
+          _tmpDate = null;
+        } else {
+          _tmpDate = _cursor.getString(_cursorIndexOfDate);
+        }
+        _item = new WeightEntry(_tmpWeightKg,_tmpDate);
+        _item.id = _cursor.getLong(_cursorIndexOfId);
+        _result.add(_item);
+      }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
     }
   }
 

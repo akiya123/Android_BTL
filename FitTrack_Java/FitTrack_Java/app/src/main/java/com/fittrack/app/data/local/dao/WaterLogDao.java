@@ -14,6 +14,16 @@ import java.util.List;
 @Dao
 public interface WaterLogDao {
 
+    @Query("SELECT * FROM water_log ORDER BY id")
+    List<WaterLog> getAllOnce();
+
+    @Query("DELETE FROM water_log")
+    void deleteAll();
+
+    @Insert
+    void insertAll(List<WaterLog> entries);
+
+
     @Query("SELECT * FROM water_log WHERE date = :date")
     LiveData<List<WaterLog>> getWaterLogsByDate(String date);
 

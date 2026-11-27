@@ -35,6 +35,8 @@ public final class WaterLogDao_Impl implements WaterLogDao {
 
   private final EntityDeletionOrUpdateAdapter<WaterLog> __deletionAdapterOfWaterLog;
 
+  private final SharedSQLiteStatement __preparedStmtOfDeleteAll;
+
   private final SharedSQLiteStatement __preparedStmtOfClearDay;
 
   public WaterLogDao_Impl(@NonNull final RoomDatabase __db) {
@@ -70,6 +72,14 @@ public final class WaterLogDao_Impl implements WaterLogDao {
         statement.bindLong(1, entity.id);
       }
     };
+    this.__preparedStmtOfDeleteAll = new SharedSQLiteStatement(__db) {
+      @Override
+      @NonNull
+      public String createQuery() {
+        final String _query = "DELETE FROM water_log";
+        return _query;
+      }
+    };
     this.__preparedStmtOfClearDay = new SharedSQLiteStatement(__db) {
       @Override
       @NonNull
@@ -78,6 +88,18 @@ public final class WaterLogDao_Impl implements WaterLogDao {
         return _query;
       }
     };
+  }
+
+  @Override
+  public void insertAll(final List<WaterLog> entries) {
+    __db.assertNotSuspendingTransaction();
+    __db.beginTransaction();
+    try {
+      __insertionAdapterOfWaterLog.insert(entries);
+      __db.setTransactionSuccessful();
+    } finally {
+      __db.endTransaction();
+    }
   }
 
   @Override
@@ -105,6 +127,23 @@ public final class WaterLogDao_Impl implements WaterLogDao {
   }
 
   @Override
+  public void deleteAll() {
+    __db.assertNotSuspendingTransaction();
+    final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteAll.acquire();
+    try {
+      __db.beginTransaction();
+      try {
+        _stmt.executeUpdateDelete();
+        __db.setTransactionSuccessful();
+      } finally {
+        __db.endTransaction();
+      }
+    } finally {
+      __preparedStmtOfDeleteAll.release(_stmt);
+    }
+  }
+
+  @Override
   public void clearDay(final String date) {
     __db.assertNotSuspendingTransaction();
     final SupportSQLiteStatement _stmt = __preparedStmtOfClearDay.acquire();
@@ -124,6 +163,41 @@ public final class WaterLogDao_Impl implements WaterLogDao {
       }
     } finally {
       __preparedStmtOfClearDay.release(_stmt);
+    }
+  }
+
+  @Override
+  public List<WaterLog> getAllOnce() {
+    final String _sql = "SELECT * FROM water_log ORDER BY id";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+      final int _cursorIndexOfAmountMl = CursorUtil.getColumnIndexOrThrow(_cursor, "amountMl");
+      final int _cursorIndexOfHour = CursorUtil.getColumnIndexOrThrow(_cursor, "hour");
+      final int _cursorIndexOfDate = CursorUtil.getColumnIndexOrThrow(_cursor, "date");
+      final List<WaterLog> _result = new ArrayList<WaterLog>(_cursor.getCount());
+      while (_cursor.moveToNext()) {
+        final WaterLog _item;
+        final int _tmpAmountMl;
+        _tmpAmountMl = _cursor.getInt(_cursorIndexOfAmountMl);
+        final int _tmpHour;
+        _tmpHour = _cursor.getInt(_cursorIndexOfHour);
+        final String _tmpDate;
+        if (_cursor.isNull(_cursorIndexOfDate)) {
+          _tmpDate = null;
+        } else {
+          _tmpDate = _cursor.getString(_cursorIndexOfDate);
+        }
+        _item = new WaterLog(_tmpAmountMl,_tmpHour,_tmpDate);
+        _item.id = _cursor.getLong(_cursorIndexOfId);
+        _result.add(_item);
+      }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
     }
   }
 

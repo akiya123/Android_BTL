@@ -14,7 +14,6 @@ import com.fittrack.app.auth.AuthActivity;
 import com.fittrack.app.data.local.AppDatabase;
 import com.fittrack.app.databinding.ActivitySplashBinding;
 import com.fittrack.app.onboarding.OnboardingActivity;
-import com.fittrack.app.util.DatabaseSeeder;
 import com.google.firebase.auth.FirebaseAuth;
 
 @SuppressLint("CustomSplashScreen")
@@ -48,7 +47,7 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         AppDatabase.databaseWriteExecutor.execute(() -> {
-            DatabaseSeeder.seedIfNeeded(getApplicationContext());
+            AppDatabase.identifyLegacyOwner(getApplicationContext());
             boolean hasProfile = AppDatabase.getInstance(getApplicationContext())
                     .userProfileDao().getUserProfileOnce() != null;
 

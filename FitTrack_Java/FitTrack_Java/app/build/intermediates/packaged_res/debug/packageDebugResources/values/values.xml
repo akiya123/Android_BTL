@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <color name="accent_cyan">#2F80ED</color>
-    <color name="accent_gradient_end">@color/accent_green_light</color>
-    <color name="accent_gradient_start">@color/accent_green</color>
-    <color name="accent_green">#2FC97A</color>
+    <color name="accent_gradient_end">@color/accent_pink_light</color>
+    <color name="accent_gradient_start">@color/accent_pink</color>
     <color name="accent_green_dark">#1E8E55</color>
     <color name="accent_green_light">#86E3B1</color>
     <color name="accent_orange">#F2994A</color>
+    <color name="accent_pink">#FF9B9B</color>
+    <color name="accent_pink_dark">#E85D75</color>
+    <color name="accent_pink_light">#FFD6D6</color>
     <color name="accent_red">#EF5350</color>
     <color name="bg_primary">#F4F7F4</color>
     <color name="bg_surface">#FFFFFF</color>
@@ -36,7 +38,7 @@
     <string name="activity_level_label">Activity Level</string>
     <string name="add_food">Add Food</string>
     <string name="age_hint">Age</string>
-    <string name="app_name">FitTrack</string>
+    <string name="app_name">HealthChecker</string>
     <string name="avatar_content_description">Profile Avatar</string>
     <string name="back">Back</string>
     <string name="body_analysis">Body Analysis</string>
@@ -130,9 +132,9 @@
         <item name="cornerSize">50%</item>
     </style>
     <style name="Theme.FitTrack" parent="Theme.Material3.Light.NoActionBar">
-        <item name="colorPrimary">@color/accent_green</item>
+        <item name="colorPrimary">@color/accent_pink</item>
         <item name="colorPrimaryDark">@color/bg_primary</item>
-        <item name="colorAccent">@color/accent_green</item>
+        <item name="colorAccent">@color/accent_pink</item>
 
         <item name="colorSurface">@color/bg_surface</item>
         <item name="colorOnSurface">@color/text_primary</item>

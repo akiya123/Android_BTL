@@ -64,6 +64,7 @@ public class AuthActivity extends AppCompatActivity {
 
     private void routeAfterAuth() {
         AppDatabase.databaseWriteExecutor.execute(() -> {
+            AppDatabase.identifyLegacyOwner(getApplicationContext());
             boolean hasProfile = AppDatabase.getInstance(getApplicationContext())
                     .userProfileDao().getUserProfileOnce() != null;
 

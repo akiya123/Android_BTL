@@ -31,6 +31,7 @@ public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
     private ProfileViewModel viewModel;
+    private androidx.appcompat.app.AlertDialog syncDialog;
 
     private final ActivityResultLauncher<PickVisualMediaRequest> pickMedia =
             registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
@@ -42,11 +43,13 @@ public class ProfileFragment extends Fragment {
     private void saveAvatarToInternalStorage(Uri sourceUri) {
         if (getContext() == null) return;
         Context appContext = getContext().getApplicationContext();
+        String uid = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
+        if (uid == null) return;
         AppDatabase.databaseWriteExecutor.execute(() -> {
             try (InputStream inputStream = appContext.getContentResolver().openInputStream(sourceUri)) {
                 if (inputStream == null) return;
 
-                File avatarFile = new File(appContext.getFilesDir(), "user_avatar.jpg");
+                File avatarFile = new File(appContext.getFilesDir(), "avatar_" + AppDatabase.accountKey(uid) + ".jpg");
                 try (FileOutputStream outputStream = new FileOutputStream(avatarFile)) {
                     byte[] buffer = new byte[4096];
                     int read;
@@ -105,7 +108,58 @@ public class ProfileFragment extends Fragment {
         binding.btnEditProfile.setOnClickListener(v ->
                 startActivity(new Intent(requireContext(), OnboardingActivity.class)));
 
+        binding.btnBackup.setOnClickListener(v -> startCloudAction(true));
+        binding.btnSync.setOnClickListener(v -> startCloudAction(false));
+        viewModel.busy().observe(getViewLifecycleOwner(), busy -> {
+            binding.btnBackup.setEnabled(!busy);
+            binding.btnSync.setEnabled(!busy);
+            binding.btnLogout.setEnabled(!busy);
+        });
+        viewModel.status().observe(getViewLifecycleOwner(), text -> {
+            binding.tvSyncStatus.setText(text);
+            binding.tvSyncStatus.setVisibility(text.isEmpty() ? View.GONE : View.VISIBLE);
+        });
+
         binding.btnLogout.setOnClickListener(v -> confirmLogout());
+    }
+
+    private void startCloudAction(boolean upload) {
+        if (viewModel.linked()) {
+            viewModel.sync(upload, null, null, false);
+            return;
+        }
+        android.widget.LinearLayout fields = new android.widget.LinearLayout(requireContext());
+        fields.setOrientation(android.widget.LinearLayout.VERTICAL);
+        int padding = (int) (24 * getResources().getDisplayMetrics().density);
+        fields.setPadding(padding, 0, padding, 0);
+        android.widget.EditText username = new android.widget.EditText(requireContext());
+        username.setSingleLine(true);
+        username.setHint("Cloud username");
+        android.widget.EditText password = new android.widget.EditText(requireContext());
+        password.setSingleLine(true);
+        password.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        password.setHint("Cloud password");
+        fields.addView(username);
+        fields.addView(password);
+        syncDialog = new MaterialAlertDialogBuilder(requireContext())
+                .setTitle("Connect cloud account")
+                .setMessage("Use your android.akiya.io.vn account to " + (upload ? "back up this device." : "sync data to this device."))
+                .setView(fields)
+                .setPositiveButton("Sign in", null)
+                .setNegativeButton("Create account", null)
+                .setNeutralButton("Cancel", null)
+                .show();
+        for (int button : new int[]{android.content.DialogInterface.BUTTON_POSITIVE, android.content.DialogInterface.BUTTON_NEGATIVE}) {
+            boolean register = button == android.content.DialogInterface.BUTTON_NEGATIVE;
+            syncDialog.getButton(button).setOnClickListener(v -> {
+                String name = username.getText().toString().trim();
+                String secret = password.getText().toString();
+                if (name.isEmpty()) { username.setError("Enter your cloud username"); return; }
+                if (secret.isEmpty()) { password.setError("Enter your cloud password"); return; }
+                syncDialog.dismiss();
+                viewModel.sync(upload, name, secret, register);
+            });
+        }
     }
 
     private void confirmLogout() {
@@ -126,6 +180,8 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        if (syncDialog != null) syncDialog.dismiss();
+        syncDialog = null;
         binding = null;
     }
 }

@@ -8,6 +8,7 @@ import androidx.room.EntityDeletionOrUpdateAdapter;
 import androidx.room.EntityInsertionAdapter;
 import androidx.room.RoomDatabase;
 import androidx.room.RoomSQLiteQuery;
+import androidx.room.SharedSQLiteStatement;
 import androidx.room.util.CursorUtil;
 import androidx.room.util.DBUtil;
 import androidx.room.util.StringUtil;
@@ -35,6 +36,8 @@ public final class FoodLogDao_Impl implements FoodLogDao {
   private final EntityInsertionAdapter<FoodLog> __insertionAdapterOfFoodLog;
 
   private final EntityDeletionOrUpdateAdapter<FoodLog> __deletionAdapterOfFoodLog;
+
+  private final SharedSQLiteStatement __preparedStmtOfDeleteAll;
 
   public FoodLogDao_Impl(@NonNull final RoomDatabase __db) {
     this.__db = __db;
@@ -81,6 +84,26 @@ public final class FoodLogDao_Impl implements FoodLogDao {
         statement.bindLong(1, entity.id);
       }
     };
+    this.__preparedStmtOfDeleteAll = new SharedSQLiteStatement(__db) {
+      @Override
+      @NonNull
+      public String createQuery() {
+        final String _query = "DELETE FROM food_log";
+        return _query;
+      }
+    };
+  }
+
+  @Override
+  public void insertAll(final List<FoodLog> entries) {
+    __db.assertNotSuspendingTransaction();
+    __db.beginTransaction();
+    try {
+      __insertionAdapterOfFoodLog.insert(entries);
+      __db.setTransactionSuccessful();
+    } finally {
+      __db.endTransaction();
+    }
   }
 
   @Override
@@ -104,6 +127,78 @@ public final class FoodLogDao_Impl implements FoodLogDao {
       __db.setTransactionSuccessful();
     } finally {
       __db.endTransaction();
+    }
+  }
+
+  @Override
+  public void deleteAll() {
+    __db.assertNotSuspendingTransaction();
+    final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteAll.acquire();
+    try {
+      __db.beginTransaction();
+      try {
+        _stmt.executeUpdateDelete();
+        __db.setTransactionSuccessful();
+      } finally {
+        __db.endTransaction();
+      }
+    } finally {
+      __preparedStmtOfDeleteAll.release(_stmt);
+    }
+  }
+
+  @Override
+  public List<FoodLog> getAllOnce() {
+    final String _sql = "SELECT * FROM food_log ORDER BY id";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+      final int _cursorIndexOfName = CursorUtil.getColumnIndexOrThrow(_cursor, "name");
+      final int _cursorIndexOfCalories = CursorUtil.getColumnIndexOrThrow(_cursor, "calories");
+      final int _cursorIndexOfProteinG = CursorUtil.getColumnIndexOrThrow(_cursor, "proteinG");
+      final int _cursorIndexOfCarbG = CursorUtil.getColumnIndexOrThrow(_cursor, "carbG");
+      final int _cursorIndexOfFatG = CursorUtil.getColumnIndexOrThrow(_cursor, "fatG");
+      final int _cursorIndexOfMealType = CursorUtil.getColumnIndexOrThrow(_cursor, "mealType");
+      final int _cursorIndexOfDate = CursorUtil.getColumnIndexOrThrow(_cursor, "date");
+      final List<FoodLog> _result = new ArrayList<FoodLog>(_cursor.getCount());
+      while (_cursor.moveToNext()) {
+        final FoodLog _item;
+        final String _tmpName;
+        if (_cursor.isNull(_cursorIndexOfName)) {
+          _tmpName = null;
+        } else {
+          _tmpName = _cursor.getString(_cursorIndexOfName);
+        }
+        final double _tmpCalories;
+        _tmpCalories = _cursor.getDouble(_cursorIndexOfCalories);
+        final double _tmpProteinG;
+        _tmpProteinG = _cursor.getDouble(_cursorIndexOfProteinG);
+        final double _tmpCarbG;
+        _tmpCarbG = _cursor.getDouble(_cursorIndexOfCarbG);
+        final double _tmpFatG;
+        _tmpFatG = _cursor.getDouble(_cursorIndexOfFatG);
+        final String _tmpMealType;
+        if (_cursor.isNull(_cursorIndexOfMealType)) {
+          _tmpMealType = null;
+        } else {
+          _tmpMealType = _cursor.getString(_cursorIndexOfMealType);
+        }
+        final String _tmpDate;
+        if (_cursor.isNull(_cursorIndexOfDate)) {
+          _tmpDate = null;
+        } else {
+          _tmpDate = _cursor.getString(_cursorIndexOfDate);
+        }
+        _item = new FoodLog(_tmpName,_tmpCalories,_tmpProteinG,_tmpCarbG,_tmpFatG,_tmpMealType,_tmpDate);
+        _item.id = _cursor.getLong(_cursorIndexOfId);
+        _result.add(_item);
+      }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
     }
   }
 

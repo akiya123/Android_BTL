@@ -6,10 +6,12 @@ anim scale_up
 color accent_cyan
 color accent_gradient_end
 color accent_gradient_start
-color accent_green
 color accent_green_dark
 color accent_green_light
 color accent_orange
+color accent_pink
+color accent_pink_dark
+color accent_pink_light
 color accent_red
 color bg_primary
 color bg_surface
@@ -73,6 +75,7 @@ id btnAddWater250
 id btnAddWater500
 id btnAddWater750
 id btnBack
+id btnBackup
 id btnClearWater
 id btnDelete
 id btnEditProfile
@@ -80,6 +83,7 @@ id btnLogin
 id btnLogout
 id btnNext
 id btnRegister
+id btnSync
 id cardDay
 id cpCalorieProgress
 id emptyState
@@ -163,6 +167,7 @@ id tvName
 id tvProteinValue
 id tvSetsReps
 id tvSlogan
+id tvSyncStatus
 id tvTdeeValue
 id tvTotalCalories
 id tvWaterTotal
@@ -296,3 +301,4 @@ style ShapeAppearance.FitTrack.Circle
 style Theme.FitTrack
 style Widget.FitTrack.BottomNav
 style Widget.FitTrack.Button
+xml debug_network_security

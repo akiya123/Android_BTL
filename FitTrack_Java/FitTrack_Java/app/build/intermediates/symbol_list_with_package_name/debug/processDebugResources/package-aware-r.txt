@@ -1378,12 +1378,14 @@ color abc_tint_switch_track
 color accent_cyan
 color accent_gradient_end
 color accent_gradient_start
-color accent_green
 color accent_green_dark
 color accent_green_light
 color accent_material_dark
 color accent_material_light
 color accent_orange
+color accent_pink
+color accent_pink_dark
+color accent_pink_light
 color accent_red
 color androidx_core_ripple_material_light
 color androidx_core_secondary_text_default_material_light
@@ -3333,6 +3335,7 @@ id btnAddWater250
 id btnAddWater500
 id btnAddWater750
 id btnBack
+id btnBackup
 id btnClearWater
 id btnDelete
 id btnEditProfile
@@ -3340,6 +3343,7 @@ id btnLogin
 id btnLogout
 id btnNext
 id btnRegister
+id btnSync
 id buttonPanel
 id cache_measures
 id callMeasure
@@ -3806,6 +3810,7 @@ id tvName
 id tvProteinValue
 id tvSetsReps
 id tvSlogan
+id tvSyncStatus
 id tvTdeeValue
 id tvTotalCalories
 id tvWaterTotal
@@ -5635,4 +5640,5 @@ styleable ViewPager2 android_orientation
 styleable ViewStubCompat android_id android_layout android_inflatedId
 styleable ViewTransition android_id SharedValue SharedValueId clearsTag duration ifTagNotSet ifTagSet motionInterpolator motionTarget onStateTransition pathMotionArc setsTag transitionDisable upDuration viewTransitionMode
 styleable include constraintSet
+xml debug_network_security
 xml image_share_filepaths

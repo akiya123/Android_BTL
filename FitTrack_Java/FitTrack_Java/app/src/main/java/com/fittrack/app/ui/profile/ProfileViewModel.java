@@ -1,6 +1,10 @@
 package com.fittrack.app.ui.profile;
 
 import android.app.Application;
+import androidx.lifecycle.MutableLiveData;
+
+import com.fittrack.app.data.cloud.CloudSaveRepository;
+import com.fittrack.app.data.local.AppDatabase;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -17,6 +21,7 @@ public class ProfileViewModel extends AndroidViewModel {
 
     public ProfileViewModel(@NonNull Application application) {
         super(application);
+        cloud = new CloudSaveRepository(application, FirebaseAuth.getInstance().getUid());
         repo = new UserRepository(application);
         userProfile = repo.getUserProfile();
     }
@@ -36,7 +41,36 @@ public class ProfileViewModel extends AndroidViewModel {
         repo.updateAvatar(uri);
     }
 
+    private final MutableLiveData<String> status = new MutableLiveData<>("");
+    private final MutableLiveData<Boolean> busy = new MutableLiveData<>(false);
+    private final CloudSaveRepository cloud;
+
+    LiveData<String> status() { return status; }
+    LiveData<Boolean> busy() { return busy; }
+    boolean linked() { return cloud.linked(); }
+
+    void sync(boolean upload, String name, String password, boolean register) {
+        if (Boolean.TRUE.equals(busy.getValue())) return;
+        busy.setValue(true);
+        status.setValue(upload ? "Backing up…" : "Syncing from cloud…");
+        AppDatabase.databaseWriteExecutor.execute(() -> {
+            try {
+                if (!cloud.linked()) cloud.link(name, password, register);
+                if (upload) cloud.backup();
+                else cloud.syncFromCloud();
+                status.postValue(upload ? "Backup saved." : "Cloud data synced.");
+            } catch (java.io.IOException error) {
+                status.postValue("Sync failed. " + error.getLocalizedMessage());
+            } catch (RuntimeException error) {
+                status.postValue("Could not process cloud data.");
+            } finally {
+                busy.postValue(false);
+            }
+        });
+    }
+
     public void logout() {
+        cloud.unlink();
         FirebaseAuth.getInstance().signOut();
     }
 }

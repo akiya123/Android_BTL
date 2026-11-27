@@ -8,6 +8,7 @@ import androidx.room.EntityDeletionOrUpdateAdapter;
 import androidx.room.EntityInsertionAdapter;
 import androidx.room.RoomDatabase;
 import androidx.room.RoomSQLiteQuery;
+import androidx.room.SharedSQLiteStatement;
 import androidx.room.util.CursorUtil;
 import androidx.room.util.DBUtil;
 import androidx.room.util.StringUtil;
@@ -36,6 +37,8 @@ public final class WorkoutLogDao_Impl implements WorkoutLogDao {
   private final EntityInsertionAdapter<WorkoutLog> __insertionAdapterOfWorkoutLog;
 
   private final EntityDeletionOrUpdateAdapter<WorkoutLog> __deletionAdapterOfWorkoutLog;
+
+  private final SharedSQLiteStatement __preparedStmtOfDeleteAll;
 
   public WorkoutLogDao_Impl(@NonNull final RoomDatabase __db) {
     this.__db = __db;
@@ -79,6 +82,26 @@ public final class WorkoutLogDao_Impl implements WorkoutLogDao {
         statement.bindLong(1, entity.id);
       }
     };
+    this.__preparedStmtOfDeleteAll = new SharedSQLiteStatement(__db) {
+      @Override
+      @NonNull
+      public String createQuery() {
+        final String _query = "DELETE FROM workout_log";
+        return _query;
+      }
+    };
+  }
+
+  @Override
+  public void insertAll(final List<WorkoutLog> entries) {
+    __db.assertNotSuspendingTransaction();
+    __db.beginTransaction();
+    try {
+      __insertionAdapterOfWorkoutLog.insert(entries);
+      __db.setTransactionSuccessful();
+    } finally {
+      __db.endTransaction();
+    }
   }
 
   @Override
@@ -102,6 +125,71 @@ public final class WorkoutLogDao_Impl implements WorkoutLogDao {
       __db.setTransactionSuccessful();
     } finally {
       __db.endTransaction();
+    }
+  }
+
+  @Override
+  public void deleteAll() {
+    __db.assertNotSuspendingTransaction();
+    final SupportSQLiteStatement _stmt = __preparedStmtOfDeleteAll.acquire();
+    try {
+      __db.beginTransaction();
+      try {
+        _stmt.executeUpdateDelete();
+        __db.setTransactionSuccessful();
+      } finally {
+        __db.endTransaction();
+      }
+    } finally {
+      __preparedStmtOfDeleteAll.release(_stmt);
+    }
+  }
+
+  @Override
+  public List<WorkoutLog> getAllOnce() {
+    final String _sql = "SELECT * FROM workout_log ORDER BY id";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+      final int _cursorIndexOfExerciseName = CursorUtil.getColumnIndexOrThrow(_cursor, "exerciseName");
+      final int _cursorIndexOfSets = CursorUtil.getColumnIndexOrThrow(_cursor, "sets");
+      final int _cursorIndexOfReps = CursorUtil.getColumnIndexOrThrow(_cursor, "reps");
+      final int _cursorIndexOfWeightKg = CursorUtil.getColumnIndexOrThrow(_cursor, "weightKg");
+      final int _cursorIndexOfCaloriesBurned = CursorUtil.getColumnIndexOrThrow(_cursor, "caloriesBurned");
+      final int _cursorIndexOfDate = CursorUtil.getColumnIndexOrThrow(_cursor, "date");
+      final List<WorkoutLog> _result = new ArrayList<WorkoutLog>(_cursor.getCount());
+      while (_cursor.moveToNext()) {
+        final WorkoutLog _item;
+        final String _tmpExerciseName;
+        if (_cursor.isNull(_cursorIndexOfExerciseName)) {
+          _tmpExerciseName = null;
+        } else {
+          _tmpExerciseName = _cursor.getString(_cursorIndexOfExerciseName);
+        }
+        final int _tmpSets;
+        _tmpSets = _cursor.getInt(_cursorIndexOfSets);
+        final int _tmpReps;
+        _tmpReps = _cursor.getInt(_cursorIndexOfReps);
+        final float _tmpWeightKg;
+        _tmpWeightKg = _cursor.getFloat(_cursorIndexOfWeightKg);
+        final double _tmpCaloriesBurned;
+        _tmpCaloriesBurned = _cursor.getDouble(_cursorIndexOfCaloriesBurned);
+        final String _tmpDate;
+        if (_cursor.isNull(_cursorIndexOfDate)) {
+          _tmpDate = null;
+        } else {
+          _tmpDate = _cursor.getString(_cursorIndexOfDate);
+        }
+        _item = new WorkoutLog(_tmpExerciseName,_tmpSets,_tmpReps,_tmpWeightKg,_tmpCaloriesBurned,_tmpDate);
+        _item.id = _cursor.getLong(_cursorIndexOfId);
+        _result.add(_item);
+      }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
     }
   }
 

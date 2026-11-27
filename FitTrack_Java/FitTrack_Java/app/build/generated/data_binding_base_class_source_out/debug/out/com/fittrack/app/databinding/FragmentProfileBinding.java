@@ -22,10 +22,16 @@ public final class FragmentProfileBinding implements ViewBinding {
   private final CoordinatorLayout rootView;
 
   @NonNull
+  public final MaterialButton btnBackup;
+
+  @NonNull
   public final MaterialButton btnEditProfile;
 
   @NonNull
   public final MaterialButton btnLogout;
+
+  @NonNull
+  public final MaterialButton btnSync;
 
   @NonNull
   public final ShapeableImageView ivAvatar;
@@ -52,17 +58,23 @@ public final class FragmentProfileBinding implements ViewBinding {
   public final TextView tvName;
 
   @NonNull
+  public final TextView tvSyncStatus;
+
+  @NonNull
   public final TextView tvTdeeValue;
 
   private FragmentProfileBinding(@NonNull CoordinatorLayout rootView,
-      @NonNull MaterialButton btnEditProfile, @NonNull MaterialButton btnLogout,
+      @NonNull MaterialButton btnBackup, @NonNull MaterialButton btnEditProfile,
+      @NonNull MaterialButton btnLogout, @NonNull MaterialButton btnSync,
       @NonNull ShapeableImageView ivAvatar, @NonNull TextView tvActivityLevel,
       @NonNull TextView tvAgeGender, @NonNull TextView tvBmrValue, @NonNull TextView tvEmail,
       @NonNull TextView tvGoal, @NonNull TextView tvHeightWeight, @NonNull TextView tvName,
-      @NonNull TextView tvTdeeValue) {
+      @NonNull TextView tvSyncStatus, @NonNull TextView tvTdeeValue) {
     this.rootView = rootView;
+    this.btnBackup = btnBackup;
     this.btnEditProfile = btnEditProfile;
     this.btnLogout = btnLogout;
+    this.btnSync = btnSync;
     this.ivAvatar = ivAvatar;
     this.tvActivityLevel = tvActivityLevel;
     this.tvAgeGender = tvAgeGender;
@@ -71,6 +83,7 @@ public final class FragmentProfileBinding implements ViewBinding {
     this.tvGoal = tvGoal;
     this.tvHeightWeight = tvHeightWeight;
     this.tvName = tvName;
+    this.tvSyncStatus = tvSyncStatus;
     this.tvTdeeValue = tvTdeeValue;
   }
 
@@ -101,6 +114,12 @@ public final class FragmentProfileBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      id = R.id.btnBackup;
+      MaterialButton btnBackup = ViewBindings.findChildViewById(rootView, id);
+      if (btnBackup == null) {
+        break missingId;
+      }
+
       id = R.id.btnEditProfile;
       MaterialButton btnEditProfile = ViewBindings.findChildViewById(rootView, id);
       if (btnEditProfile == null) {
@@ -110,6 +129,12 @@ public final class FragmentProfileBinding implements ViewBinding {
       id = R.id.btnLogout;
       MaterialButton btnLogout = ViewBindings.findChildViewById(rootView, id);
       if (btnLogout == null) {
+        break missingId;
+      }
+
+      id = R.id.btnSync;
+      MaterialButton btnSync = ViewBindings.findChildViewById(rootView, id);
+      if (btnSync == null) {
         break missingId;
       }
 
@@ -161,15 +186,21 @@ public final class FragmentProfileBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tvSyncStatus;
+      TextView tvSyncStatus = ViewBindings.findChildViewById(rootView, id);
+      if (tvSyncStatus == null) {
+        break missingId;
+      }
+
       id = R.id.tvTdeeValue;
       TextView tvTdeeValue = ViewBindings.findChildViewById(rootView, id);
       if (tvTdeeValue == null) {
         break missingId;
       }
 
-      return new FragmentProfileBinding((CoordinatorLayout) rootView, btnEditProfile, btnLogout,
-          ivAvatar, tvActivityLevel, tvAgeGender, tvBmrValue, tvEmail, tvGoal, tvHeightWeight,
-          tvName, tvTdeeValue);
+      return new FragmentProfileBinding((CoordinatorLayout) rootView, btnBackup, btnEditProfile,
+          btnLogout, btnSync, ivAvatar, tvActivityLevel, tvAgeGender, tvBmrValue, tvEmail, tvGoal,
+          tvHeightWeight, tvName, tvSyncStatus, tvTdeeValue);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

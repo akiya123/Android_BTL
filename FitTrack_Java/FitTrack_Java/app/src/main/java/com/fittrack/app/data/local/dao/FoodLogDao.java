@@ -14,6 +14,16 @@ import java.util.List;
 @Dao
 public interface FoodLogDao {
 
+    @Query("SELECT * FROM food_log ORDER BY id")
+    List<FoodLog> getAllOnce();
+
+    @Query("DELETE FROM food_log")
+    void deleteAll();
+
+    @Insert
+    void insertAll(List<FoodLog> entries);
+
+
     @Query("SELECT * FROM food_log WHERE date = :date ORDER BY id DESC")
     LiveData<List<FoodLog>> getFoodLogsByDate(String date);
 

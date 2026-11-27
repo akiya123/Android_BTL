@@ -14,6 +14,16 @@ import java.util.List;
 @Dao
 public interface WorkoutLogDao {
 
+    @Query("SELECT * FROM workout_log ORDER BY id")
+    List<WorkoutLog> getAllOnce();
+
+    @Query("DELETE FROM workout_log")
+    void deleteAll();
+
+    @Insert
+    void insertAll(List<WorkoutLog> entries);
+
+
     @Query("SELECT * FROM workout_log WHERE date = :date ORDER BY id DESC")
     LiveData<List<WorkoutLog>> getWorkoutLogsByDate(String date);
 

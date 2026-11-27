@@ -62,7 +62,8 @@ public class AuthViewModel extends ViewModel {
                 })
                 .addOnFailureListener(e -> {
                     isLoading.setValue(false);
-                    authResult.setValue(AuthOutcome.failure(e.getMessage()));
+                    authResult.setValue(AuthOutcome.failure(e instanceof com.google.firebase.FirebaseNetworkException
+                            ? "Connect to the internet and try again." : e.getMessage()));
                 });
     }
 
@@ -87,7 +88,8 @@ public class AuthViewModel extends ViewModel {
                 })
                 .addOnFailureListener(e -> {
                     isLoading.setValue(false);
-                    authResult.setValue(AuthOutcome.failure(e.getMessage()));
+                    authResult.setValue(AuthOutcome.failure(e instanceof com.google.firebase.FirebaseNetworkException
+                            ? "Connect to the internet and try again." : e.getMessage()));
                 });
     }
 

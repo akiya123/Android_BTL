@@ -13,6 +13,16 @@ import java.util.List;
 @Dao
 public interface WeightEntryDao {
 
+    @Query("SELECT * FROM weight_entry ORDER BY id")
+    List<WeightEntry> getAllOnce();
+
+    @Query("DELETE FROM weight_entry")
+    void deleteAll();
+
+    @Insert
+    void insertAll(List<WeightEntry> entries);
+
+
     @Query("SELECT * FROM weight_entry ORDER BY date ASC, id ASC")
     LiveData<List<WeightEntry>> getAllWeights();
 
