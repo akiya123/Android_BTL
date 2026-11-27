@@ -14,7 +14,7 @@ import com.fittrack.app.auth.AuthActivity;
 import com.fittrack.app.data.local.AppDatabase;
 import com.fittrack.app.databinding.ActivitySplashBinding;
 import com.fittrack.app.onboarding.OnboardingActivity;
-import com.google.firebase.auth.FirebaseAuth;
+import com.fittrack.app.auth.AccountSession;
 
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
@@ -39,8 +39,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void route() {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() == null) {
+        if (AccountSession.localId(this) == null) {
             startActivity(new Intent(this, AuthActivity.class));
             finish();
             return;

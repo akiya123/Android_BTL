@@ -3435,7 +3435,6 @@ id etCalories
 id etCaloriesBurned
 id etCarb
 id etConfirmPassword
-id etEmail
 id etExerciseName
 id etFat
 id etFoodName
@@ -3445,6 +3444,7 @@ id etPassword
 id etProtein
 id etReps
 id etSets
+id etUsername
 id etWeight
 id etWeightValue
 id exitUntilCollapsed

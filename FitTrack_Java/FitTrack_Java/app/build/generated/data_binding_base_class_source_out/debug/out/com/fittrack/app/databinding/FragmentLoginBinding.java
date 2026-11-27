@@ -25,21 +25,21 @@ public final class FragmentLoginBinding implements ViewBinding {
   public final MaterialButton btnLogin;
 
   @NonNull
-  public final TextInputEditText etEmail;
+  public final TextInputEditText etPassword;
 
   @NonNull
-  public final TextInputEditText etPassword;
+  public final TextInputEditText etUsername;
 
   @NonNull
   public final TextView tvGoRegister;
 
   private FragmentLoginBinding(@NonNull ScrollView rootView, @NonNull MaterialButton btnLogin,
-      @NonNull TextInputEditText etEmail, @NonNull TextInputEditText etPassword,
+      @NonNull TextInputEditText etPassword, @NonNull TextInputEditText etUsername,
       @NonNull TextView tvGoRegister) {
     this.rootView = rootView;
     this.btnLogin = btnLogin;
-    this.etEmail = etEmail;
     this.etPassword = etPassword;
+    this.etUsername = etUsername;
     this.tvGoRegister = tvGoRegister;
   }
 
@@ -76,15 +76,15 @@ public final class FragmentLoginBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.etEmail;
-      TextInputEditText etEmail = ViewBindings.findChildViewById(rootView, id);
-      if (etEmail == null) {
-        break missingId;
-      }
-
       id = R.id.etPassword;
       TextInputEditText etPassword = ViewBindings.findChildViewById(rootView, id);
       if (etPassword == null) {
+        break missingId;
+      }
+
+      id = R.id.etUsername;
+      TextInputEditText etUsername = ViewBindings.findChildViewById(rootView, id);
+      if (etUsername == null) {
         break missingId;
       }
 
@@ -94,7 +94,7 @@ public final class FragmentLoginBinding implements ViewBinding {
         break missingId;
       }
 
-      return new FragmentLoginBinding((ScrollView) rootView, btnLogin, etEmail, etPassword,
+      return new FragmentLoginBinding((ScrollView) rootView, btnLogin, etPassword, etUsername,
           tvGoRegister);
     }
     String missingId = rootView.getResources().getResourceName(id);

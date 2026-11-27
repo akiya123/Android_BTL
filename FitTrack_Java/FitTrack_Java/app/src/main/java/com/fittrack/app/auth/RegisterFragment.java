@@ -33,10 +33,10 @@ public class RegisterFragment extends Fragment {
         authViewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
 
         binding.btnRegister.setOnClickListener(v -> {
-            String email = binding.etEmail.getText().toString().trim();
-            String password = binding.etPassword.getText().toString().trim();
-            String confirm = binding.etConfirmPassword.getText().toString().trim();
-            authViewModel.register(email, password, confirm);
+            String username = binding.etUsername.getText().toString().trim();
+            String password = binding.etPassword.getText().toString();
+            String confirm = binding.etConfirmPassword.getText().toString();
+            authViewModel.register(username, password, confirm);
         });
 
         binding.tvGoLogin.setOnClickListener(v -> ((AuthActivity) requireActivity()).showLoginFragment());

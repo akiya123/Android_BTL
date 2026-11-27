@@ -28,22 +28,22 @@ public final class FragmentRegisterBinding implements ViewBinding {
   public final TextInputEditText etConfirmPassword;
 
   @NonNull
-  public final TextInputEditText etEmail;
+  public final TextInputEditText etPassword;
 
   @NonNull
-  public final TextInputEditText etPassword;
+  public final TextInputEditText etUsername;
 
   @NonNull
   public final TextView tvGoLogin;
 
   private FragmentRegisterBinding(@NonNull ScrollView rootView, @NonNull MaterialButton btnRegister,
-      @NonNull TextInputEditText etConfirmPassword, @NonNull TextInputEditText etEmail,
-      @NonNull TextInputEditText etPassword, @NonNull TextView tvGoLogin) {
+      @NonNull TextInputEditText etConfirmPassword, @NonNull TextInputEditText etPassword,
+      @NonNull TextInputEditText etUsername, @NonNull TextView tvGoLogin) {
     this.rootView = rootView;
     this.btnRegister = btnRegister;
     this.etConfirmPassword = etConfirmPassword;
-    this.etEmail = etEmail;
     this.etPassword = etPassword;
+    this.etUsername = etUsername;
     this.tvGoLogin = tvGoLogin;
   }
 
@@ -86,15 +86,15 @@ public final class FragmentRegisterBinding implements ViewBinding {
         break missingId;
       }
 
-      id = R.id.etEmail;
-      TextInputEditText etEmail = ViewBindings.findChildViewById(rootView, id);
-      if (etEmail == null) {
-        break missingId;
-      }
-
       id = R.id.etPassword;
       TextInputEditText etPassword = ViewBindings.findChildViewById(rootView, id);
       if (etPassword == null) {
+        break missingId;
+      }
+
+      id = R.id.etUsername;
+      TextInputEditText etUsername = ViewBindings.findChildViewById(rootView, id);
+      if (etUsername == null) {
         break missingId;
       }
 
@@ -105,7 +105,7 @@ public final class FragmentRegisterBinding implements ViewBinding {
       }
 
       return new FragmentRegisterBinding((ScrollView) rootView, btnRegister, etConfirmPassword,
-          etEmail, etPassword, tvGoLogin);
+          etPassword, etUsername, tvGoLogin);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

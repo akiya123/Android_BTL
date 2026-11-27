@@ -18,7 +18,7 @@ public final class CloudSaveRepository {
     private final AppDatabase db;
     private final SharedPreferences accounts;
     private final String uid;
-    private final Gson gson = new Gson();
+    private static final Gson gson = new Gson();
 
     public CloudSaveRepository(Context context, String uid) {
         this.uid = uid;
@@ -28,14 +28,18 @@ public final class CloudSaveRepository {
 
     public boolean linked() { return accounts.contains(uid); }
 
-    public void unlink() { accounts.edit().remove(uid).apply(); }
+
 
     public void link(String username, String password, boolean register) throws IOException {
+        accounts.edit().putString(uid, authenticate(username, password, register)).apply();
+    }
+
+    public static String authenticate(String username, String password, boolean register) throws IOException {
         Reply reply = call(register ? "auth/register" : "auth/login", new Credentials(username, password), Reply.class);
         if (!reply.success || reply.userId == null || !reply.userId.matches("USR_[A-Za-z0-9]+")) {
             throw new IOException("Cloud login failed.");
         }
-        accounts.edit().putString(uid, reply.userId).apply();
+        return reply.userId;
     }
 
     private String cloudId() throws IOException {
@@ -74,7 +78,7 @@ public final class CloudSaveRepository {
         SnapshotMapper.merge(db, cloud);
     }
 
-    private <T> T call(String path, Object body, Class<T> type) throws IOException {
+    private static <T> T call(String path, Object body, Class<T> type) throws IOException {
         URL url = new URL(BuildConfig.CLOUD_API_URL.replaceAll("/+$", "") + "/" + path);
         if (!"https".equals(url.getProtocol())) throw new IOException("The cloud API requires HTTPS.");
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
@@ -93,6 +97,10 @@ public final class CloudSaveRepository {
                 }
             }
             int status = connection.getResponseCode();
+            if (path.startsWith("auth/")) android.util.Log.i("FitTrackAuth", "POST " + path + " HTTP " + status);
+            if (status == 400 && path.equals("auth/register")) {
+                throw new IOException("Registration was refused. Check the username or sign in if it already exists.");
+            }
             if (status == 401) throw new IOException("Incorrect cloud username or password.");
             if (status < 200 || status >= 300) throw new IOException("Cloud request failed (HTTP " + status + ").");
             try (Reader reader = new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8)) {

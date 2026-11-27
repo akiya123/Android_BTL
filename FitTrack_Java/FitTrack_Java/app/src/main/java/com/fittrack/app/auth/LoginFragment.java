@@ -33,9 +33,9 @@ public class LoginFragment extends Fragment {
         authViewModel = new ViewModelProvider(requireActivity()).get(AuthViewModel.class);
 
         binding.btnLogin.setOnClickListener(v -> {
-            String email = binding.etEmail.getText().toString().trim();
-            String password = binding.etPassword.getText().toString().trim();
-            authViewModel.login(email, password);
+            String username = binding.etUsername.getText().toString().trim();
+            String password = binding.etPassword.getText().toString();
+            authViewModel.login(username, password);
         });
 
         binding.tvGoRegister.setOnClickListener(v -> ((AuthActivity) requireActivity()).showRegisterFragment());

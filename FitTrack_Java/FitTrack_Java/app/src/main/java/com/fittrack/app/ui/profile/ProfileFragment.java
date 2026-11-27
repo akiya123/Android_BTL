@@ -43,7 +43,7 @@ public class ProfileFragment extends Fragment {
     private void saveAvatarToInternalStorage(Uri sourceUri) {
         if (getContext() == null) return;
         Context appContext = getContext().getApplicationContext();
-        String uid = com.google.firebase.auth.FirebaseAuth.getInstance().getUid();
+        String uid = com.fittrack.app.auth.AccountSession.localId(appContext);
         if (uid == null) return;
         AppDatabase.databaseWriteExecutor.execute(() -> {
             try (InputStream inputStream = appContext.getContentResolver().openInputStream(sourceUri)) {
@@ -113,14 +113,18 @@ public class ProfileFragment extends Fragment {
         viewModel.busy().observe(getViewLifecycleOwner(), busy -> {
             binding.btnBackup.setEnabled(!busy);
             binding.btnSync.setEnabled(!busy);
-            binding.btnLogout.setEnabled(!busy);
         });
         viewModel.status().observe(getViewLifecycleOwner(), text -> {
             binding.tvSyncStatus.setText(text);
             binding.tvSyncStatus.setVisibility(text.isEmpty() ? View.GONE : View.VISIBLE);
         });
 
-        binding.btnLogout.setOnClickListener(v -> confirmLogout());
+        binding.btnLogout.setOnClickListener(v -> {
+            if (!viewModel.logout()) return;
+            Intent login = new Intent(requireContext(), AuthActivity.class);
+            startActivity(login);
+            requireActivity().finishAffinity();
+        });
     }
 
     private void startCloudAction(boolean upload) {
@@ -160,21 +164,6 @@ public class ProfileFragment extends Fragment {
                 viewModel.sync(upload, name, secret, register);
             });
         }
-    }
-
-    private void confirmLogout() {
-        new MaterialAlertDialogBuilder(requireContext())
-                .setTitle("Logout")
-                .setMessage("Are you sure you want to logout from FitTrack?")
-                .setPositiveButton("Logout", (dialog, which) -> {
-                    viewModel.logout();
-                    Intent intent = new Intent(requireContext(), AuthActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    requireActivity().finish();
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
     }
 
     @Override

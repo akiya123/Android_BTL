@@ -8,24 +8,24 @@
         "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\drawable\\ic_arrow_left.xml"
     },
     {
-        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-debug-44:\\drawable_dot_active.xml.flat",
-        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\drawable\\dot_active.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-debug-44:\\layout_view_brand_logo.xml.flat",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\view_brand_logo.xml"
     },
     {
         "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-debug-44:\\drawable_ic_meal_morning.xml.flat",
         "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\drawable\\ic_meal_morning.xml"
     },
     {
-        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-debug-44:\\layout_view_brand_logo.xml.flat",
-        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\view_brand_logo.xml"
-    },
-    {
-        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-debug-44:\\layout_fragment_register.xml.flat",
-        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\fragment_register.xml"
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-debug-44:\\drawable_dot_active.xml.flat",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\drawable\\dot_active.xml"
     },
     {
         "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-debug-44:\\drawable_ic_launcher_background.xml.flat",
         "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\drawable\\ic_launcher_background.xml"
+    },
+    {
+        "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-debug-44:\\layout_fragment_register.xml.flat",
+        "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\fragment_register.xml"
     },
     {
         "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-debug-44:\\layout_layout_empty_state.xml.flat",
@@ -42,6 +42,10 @@
     {
         "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-debug-44:\\color_bottom_nav_item_color.xml.flat",
         "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\color\\bottom_nav_item_color.xml"
+    },
+    {
+        "merged": "com.fittrack.app-debug-44:/layout_fragment_login.xml.flat",
+        "source": "com.fittrack.app-main-46:/layout/fragment_login.xml"
     },
     {
         "merged": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-debug-44:\\drawable_ic_delete.xml.flat",
@@ -236,7 +240,7 @@
         "source": "C:\\Users\\hoann\\.gradle\\daemon\\9.5.0\\com.fittrack.app-main-46:\\layout\\dialog_add_weight.xml"
     },
     {
-        "merged": "com.fittrack.app-debug-44:/layout_fragment_profile.xml.flat",
-        "source": "com.fittrack.app-main-46:/layout/fragment_profile.xml"
+        "merged": "com.fittrack.app-debug-44:/layout_fragment_register.xml.flat",
+        "source": "com.fittrack.app-main-46:/layout/fragment_register.xml"
     }
 ]

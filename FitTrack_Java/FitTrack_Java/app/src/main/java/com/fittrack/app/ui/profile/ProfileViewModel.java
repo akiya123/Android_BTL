@@ -12,7 +12,7 @@ import androidx.lifecycle.LiveData;
 
 import com.fittrack.app.data.local.entity.UserProfile;
 import com.fittrack.app.data.repository.UserRepository;
-import com.google.firebase.auth.FirebaseAuth;
+import com.fittrack.app.auth.AccountSession;
 
 public class ProfileViewModel extends AndroidViewModel {
 
@@ -21,7 +21,7 @@ public class ProfileViewModel extends AndroidViewModel {
 
     public ProfileViewModel(@NonNull Application application) {
         super(application);
-        cloud = new CloudSaveRepository(application, FirebaseAuth.getInstance().getUid());
+        cloud = new CloudSaveRepository(application, AccountSession.localId(application));
         repo = new UserRepository(application);
         userProfile = repo.getUserProfile();
     }
@@ -31,10 +31,7 @@ public class ProfileViewModel extends AndroidViewModel {
     }
 
     public String currentEmail() {
-        return FirebaseAuth.getInstance().getCurrentUser() != null
-                && FirebaseAuth.getInstance().getCurrentUser().getEmail() != null
-                ? FirebaseAuth.getInstance().getCurrentUser().getEmail()
-                : "";
+        return AccountSession.username(getApplication());
     }
 
     public void updateAvatar(String uri) {
@@ -69,8 +66,9 @@ public class ProfileViewModel extends AndroidViewModel {
         });
     }
 
-    public void logout() {
-        cloud.unlink();
-        FirebaseAuth.getInstance().signOut();
+    public boolean logout() {
+        if (AccountSession.logout(getApplication())) return true;
+        status.setValue("Could not save logout on this device. Please try again.");
+        return false;
     }
 }

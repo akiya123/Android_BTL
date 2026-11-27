@@ -3,8 +3,7 @@ package com.fittrack.app.data.local;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Base64;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.fittrack.app.auth.AccountSession;
 import java.nio.charset.StandardCharsets;
 
 import androidx.annotation.NonNull;
@@ -66,9 +65,9 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public static AppDatabase getInstance(@NonNull Context context) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String user = AccountSession.localId(context);
         if (user == null) throw new IllegalStateException("Sign in to access FitTrack data.");
-        return forAccount(context, user.getUid());
+        return forAccount(context, user);
     }
 
     public static synchronized AppDatabase forAccount(Context context, String uid) {

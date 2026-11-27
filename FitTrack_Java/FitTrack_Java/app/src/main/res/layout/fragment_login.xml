@@ -30,7 +30,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Login to continue your fitness journey"
+            android:text="Sign in with your android.akiya.io.vn account"
             android:textColor="@color/text_secondary"
             android:textSize="14sp"
             android:layout_marginTop="4dp"
@@ -39,17 +39,17 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email Address"
+            android:hint="Cloud username"
             app:boxBackgroundColor="@color/bg_surface"
             app:boxStrokeColor="@color/accent_pink"
             app:hintTextColor="@color/text_secondary">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etEmail"
+                android:id="@+id/etUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_primary"
-                android:inputType="textEmailAddress" />
+                android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

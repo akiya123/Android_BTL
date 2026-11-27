@@ -11,7 +11,7 @@ import com.fittrack.app.data.local.AppDatabase;
 import com.fittrack.app.data.local.entity.UserProfile;
 import com.fittrack.app.data.repository.UserRepository;
 import com.fittrack.app.util.TDEECalculator;
-import com.google.firebase.auth.FirebaseAuth;
+import com.fittrack.app.auth.AccountSession;
 
 public class OnboardingViewModel extends AndroidViewModel {
 
@@ -61,9 +61,7 @@ public class OnboardingViewModel extends AndroidViewModel {
         double calorieGoal = TDEECalculator.calculateCalorieGoal(tdee, goal);
         TDEECalculator.MacroResult macros = TDEECalculator.calculateMacros(calorieGoal);
 
-        String uid = FirebaseAuth.getInstance().getCurrentUser() != null
-                ? FirebaseAuth.getInstance().getCurrentUser().getUid()
-                : "";
+        String uid = AccountSession.localId(getApplication());
 
         AppDatabase.databaseWriteExecutor.execute(() -> {
             UserProfile existing = repo.getUserProfileOnce();
