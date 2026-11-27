@@ -49,7 +49,7 @@
                 android:id="@+id/tvFoodName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tên món ăn"
+                android:text="@string/food_name_hint"
                 android:textColor="@color/text_primary"
                 android:textSize="15sp"
                 android:textStyle="bold" />
@@ -91,7 +91,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_delete"
             app:tint="@color/text_muted"
-            android:contentDescription="Xóa" />
+            android:contentDescription="@string/delete" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
