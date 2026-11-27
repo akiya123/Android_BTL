@@ -1,0 +1,260 @@
+﻿================================================================================
+ FITTRACK CLOUD API - TONG HOP CAU TRUY VAN VA VI DU
+================================================================================
+ Dia chi goc (khi chay bang "dotnet run"):  http://localhost:5000/api/v1
+ Dinh dang: JSON, ten truong camelCase, ngay dang yyyy-MM-dd
+ Xac thuc : header  Authorization: Bearer <Firebase ID token>
+            (moi endpoint deu can token, tru /health)
+
+
+--------------------------------------------------------------------------------
+ 0. CHAY API (nhac lai)
+--------------------------------------------------------------------------------
+ a) Tao database: mo SSMS, ket noi
+        Server name : localhost,1433        (dau phay, khong phai dau hai cham)
+        Login       : sa   /   Mat khau : <MAT_KHAU_SA>
+        Tick "Trust server certificate"
+    Mo file 01_FitTrackCloud_SqlServer.sql -> Execute.
+    Cuoi ket qua phai co dong "FitTrackCloud: tao schema thanh cong."
+
+ b) Chay API trong PowerShell (sua duong dan cho dung may cua ban):
+
+    cd "C:\Users\hoann\Downloads\C#_claud\FitTrackCloud\src\FitTrack.Api"
+    $env:ConnectionStrings__Default = "Server=localhost,1433;Database=FitTrackCloud;User Id=sa;Password=<MAT_KHAU_SA>;TrustServerCertificate=True;Encrypt=True"
+    $env:Firebase__ProjectId = "fittrack-bf1cd"
+    dotnet run
+
+    Thay <MAT_KHAU_SA> bang mat khau that. Mo http://localhost:5000/api/v1/health
+    Ket qua dung: "status":"ok","database":true
+
+    Luu y: dotnet --version phai bat dau bang 10. (can .NET 10 SDK).
+    Khi dua len server that, nen tao login rieng bang 02_CreateApiLogin.sql
+    thay cho "sa", va khong mo cong 1433 ra Internet.
+
+
+--------------------------------------------------------------------------------
+ 1. CHUAN BI TRONG POWERSHELL (dan 1 lan cho moi phien)
+--------------------------------------------------------------------------------
+ API_KEY  = truong "current_key" trong google-services.json
+ email/mat khau = tai khoan da dang ky trong app
+
+    $base = "http://localhost:5000/api/v1"
+
+    # Lay Firebase ID token (song 1 gio; het han thi chay lai 2 dong nay)
+    $login = Invoke-RestMethod -Method Post -ContentType "application/json" `
+      -Uri "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=API_KEY" `
+      -Body '{"email":"you@example.com","password":"MAT_KHAU","returnSecureToken":true}'
+    $token = $login.idToken
+
+    # Ham goi API: in ra ca ma trang thai (HTTP/1.1 201...) lan noi dung
+    function Api($method, $path, $file) {
+      if ($file) { curl.exe -s -i -X $method "$base$path" -H "Authorization: Bearer $token" -H "Content-Type: application/json" --data-binary "@$file" }
+      else       { curl.exe -s -i -X $method "$base$path" -H "Authorization: Bearer $token" }
+    }
+
+
+--------------------------------------------------------------------------------
+ 2. BANG TONG HOP ENDPOINT
+--------------------------------------------------------------------------------
+ Method  Duong dan                  Token  Muc dich                          Ma tra ve
+ ------  -------------------------  -----  --------------------------------  ----------------------
+ GET     /health                    Khong  Kiem tra server va database       200, 503
+ GET     /me                        Co     Thong tin tai khoan cloud + ban   200
+                                           sao luu moi nhat (tu tao user
+                                           lan dau)
+ DELETE  /me                        Co     Xoa vinh vien TOAN BO du lieu     204
+                                           cloud cua toi
+ GET     /cloud-save                Co     Danh sach ban sao luu, moi nhat   200
+                                           truoc
+ GET     /cloud-save/latest         Co     Tom tat ban moi nhat              200, 404
+ GET     /cloud-save/{id}           Co     Tom tat mot ban                   200, 404
+ GET     /cloud-save/latest/data    Co     Tai toan bo du lieu ban moi nhat  200, 404
+ GET     /cloud-save/{id}/data      Co     Tai toan bo du lieu mot ban       200, 404
+ POST    /cloud-save                Co     Tai len snapshot                  201, 200, 409, 400, 429
+ DELETE  /cloud-save/{id}           Co     Xoa mot ban cua chinh minh        204, 404
+
+ Thieu token hoac token sai thi moi endpoint (tru /health) tra 401.
+
+
+--------------------------------------------------------------------------------
+ 3. VI DU TUNG ENDPOINT
+--------------------------------------------------------------------------------
+
+ 3.1 Health (khong can token)
+
+    Api GET /health
+
+    {"status":"ok","database":true,"utc":"2026-11-12T09:30:00.12+00:00"}
+
+    Khi database loi: tra 503 voi "status":"degraded","database":false
+
+
+ 3.2 Thong tin tai khoan
+
+    Api GET /me
+
+    {"id":1,"email":"you@example.com","displayName":null,
+     "createdAtUtc":"2026-11-12T09:30:00+00:00",
+     "backupCount":0,"maxBackups":5,"latest":null}
+
+
+ 3.3 Ban moi nhat, danh sach, mot ban
+
+    Api GET /cloud-save/latest
+    Api GET /cloud-save
+    Api GET /cloud-save/1
+
+    Moi ban sao luu (BackupInfo) co dang:
+
+    {"id":1,"createdAtUtc":"2026-11-12T09:31:00+00:00","deviceId":"pc-test-01",
+     "deviceName":"PC Test","appVersion":"1.0","schemaVersion":12,"label":null,
+     "isAuto":false,"hasProfile":true,"profileName":"An","latestWeightKg":65.2,
+     "foodLogCount":1,"workoutLogCount":1,"weightEntryCount":1,"waterLogCount":1,
+     "firstLogDate":"2026-11-10","lastLogDate":"2026-11-10"}
+
+    Khi cloud chua co ban nao:
+      /cloud-save/latest -> 404, "title":"Chua co ban sao luu nao tren cloud."
+      /cloud-save        -> danh sach rong []
+
+
+ 3.4 Tai du lieu de khoi phuc
+
+    Api GET /cloud-save/latest/data
+    Api GET /cloud-save/1/data
+
+    {"info":{ ...BackupInfo nhu tren... },
+     "data":{"profile":{...},"foodLogs":[...],"workoutLogs":[...],
+             "weightEntries":[...],"waterLogs":[...]}}
+
+
+ 3.5 Tai len snapshot - tao file mau snapshot.json (toan chu ASCII)
+
+    @'
+    {
+      "deviceId": "pc-test-01", "deviceName": "PC Test", "appVersion": "1.0", "schemaVersion": 12,
+      "isAuto": false, "baseBackupId": null, "force": false,
+      "data": {
+        "profile": { "name": "An", "age": 25, "gender": "Male", "heightCm": 170.5, "weightKg": 65.2,
+          "activityLevel": "Sedentary", "goal": "Maintain", "bmr": 1600.5, "tdee": 1920.6,
+          "calorieGoal": 1920.6, "proteinGoalG": 144, "carbGoalG": 192, "fatGoalG": 64 },
+        "foodLogs":      [{ "localId": 1, "name": "Beef Pho", "calories": 450, "proteinG": 25, "carbG": 60, "fatG": 15, "mealType": "Lunch", "date": "2026-11-10" }],
+        "workoutLogs":   [{ "localId": 1, "exerciseName": "Squats", "sets": 3, "reps": 20, "weightKg": 20, "caloriesBurned": 180.5, "date": "2026-11-10" }],
+        "weightEntries": [{ "localId": 1, "weightKg": 65.2, "date": "2026-11-10" }],
+        "waterLogs":     [{ "localId": 1, "amountMl": 250, "hour": 8, "date": "2026-11-10" }]
+      }
+    }
+    '@ | Set-Content -Encoding ascii snapshot.json
+
+    Goi:   Api POST /cloud-save snapshot.json
+
+    Giai thich cac truong gui len:
+      deviceId       UUID cua may (app tu sinh 1 lan)
+      deviceName     ten may hien thi, toi da 100 ky tu
+      appVersion     toi da 20 ky tu
+      schemaVersion  version cua Room AppDatabase (hien la 12)
+      isAuto         true neu do WorkManager tu sao luu
+      baseBackupId   id ban cloud ma may nay da dong bo gan nhat (null = chua tung)
+      force          true = nguoi dung chon "Giu du lieu tren may" -> ghi de
+      data           toan bo noi dung snapshot (bat buoc)
+
+
+ 3.6 Xoa mot ban va xoa toan bo du lieu cloud
+
+    Api DELETE /cloud-save/1     # 204 neu xoa duoc, 404 neu khong co ban do
+    Api DELETE /me               # 204, xoa moi ban sao luu va dong Users cua ban
+
+
+--------------------------------------------------------------------------------
+ 4. KICH BAN POST DU CAC TRUONG HOP (kieu Soul Knight)
+--------------------------------------------------------------------------------
+ Moi truong hop la mot lan goi "Api POST /cloud-save <file>" voi noi dung khac nhau.
+
+ Truong hop                                  Cach tao file                  Ket qua
+ ------------------------------------------  -----------------------------  ---------------------------
+ A. Lan dau, cloud trong                     dung snapshot.json             201 "outcome":"created",
+                                                                            header Location: .../cloud-save/1
+ B. Gui lai y het                            dung lai snapshot.json         200 "outcome":"unchanged",
+                                                                            khong tao ban trung
+ C. May da dong bo nhung co du lieu moi      doi "Beef Pho" -> "Chicken     201, ban moi co id 2
+                                             Rice", dat "baseBackupId": 1
+ D. May khac, du lieu khac, baseBackupId     doi "Beef Pho" -> "Fish Soup", 409 Conflict,
+    la null                                  giu null                       KHONG bi ghi de
+ E. Nguoi dung chon giu may nay              nhu D nhung "force": true      201, ban cu van duoc giu
+
+ Tao file cho truong hop C, D, E bang lenh thay chu:
+
+    (Get-Content snapshot.json -Raw) -replace 'Beef Pho','Chicken Rice' -replace '"baseBackupId": null','"baseBackupId": 1' | Set-Content -Encoding ascii snapC.json
+    (Get-Content snapshot.json -Raw) -replace 'Beef Pho','Fish Soup' | Set-Content -Encoding ascii snapD.json
+    (Get-Content snapD.json -Raw) -replace '"force": false','"force": true' | Set-Content -Encoding ascii snapE.json
+
+    Api POST /cloud-save snapC.json
+    Api POST /cloud-save snapD.json
+    Api POST /cloud-save snapE.json
+
+ Phan hoi 201:
+    {"outcome":"created","backup":{ ...BackupInfo... },"prunedBackups":0}
+
+ Phan hoi 409:
+    {"code":"CLOUD_HAS_DIFFERENT_DATA",
+     "message":"Cloud dang co du lieu khac voi ban ma may nay da dong bo. ...",
+     "latest":{ ...BackupInfo cua ban tren cloud... }}
+
+ Trong app that, phan hoi 409 la luc hien hop thoai de nguoi dung chon
+ "Keep this device" hoac "Use cloud".
+
+ Quy tac giu ban: server chi giu N ban moi nhat cho moi nguoi (mac dinh 5,
+ chinh bang CloudSave__MaxBackupsPerUser). Ban cu nhat tu xoa khi vuot qua N;
+ "prunedBackups" cho biet da xoa bao nhieu ban.
+
+
+--------------------------------------------------------------------------------
+ 5. MA TRANG THAI VA LOI THUONG GAP
+--------------------------------------------------------------------------------
+ Ma             Y nghia             Gap khi
+ -------------  ------------------  -------------------------------------------------------
+ 200, 201, 204  Thanh cong
+ 400            Du lieu sai         Thieu "data" hoac "date", so am, "hour" ngoai 0-23,
+                                    ngay sai dinh dang (phai yyyy-MM-dd), qua 50.000 dong
+                                    moi bang, JSON hong
+ 401            Chua dang nhap      Thieu header, token het han (1 gio),
+                                    sai Firebase__ProjectId
+ 404            Khong tim thay      Cloud chua co ban nao, hoac id khong phai cua ban
+ 409            Xung dot            Cloud co ban khac voi ban may nay da dong bo
+                                    (can "force" hoac tai ban cloud)
+ 413            Than qua lon        Tren 20 MB (hoac nginx chua chinh client_max_body_size)
+ 429            Goi qua nhanh       Qua 60 request moi phut
+ 503            Database loi        Chi o /health
+
+ Quy tac validate:
+   - So khong am; "hour" tu 0 den 23; chuoi khong qua dai
+   - Toi da 50.000 dong moi bang trong 1 snapshot; than toi da 20 MB
+   - KHONG rang buoc danh sach mealType/goal... (de app them gia tri moi van sao luu duoc)
+   - Chuoi rong duoc chap nhan; thieu "data" hoac "date" thi bi 400
+   - Truong la trong JSON duoc bo qua
+
+
+--------------------------------------------------------------------------------
+ 6. TRUY VAN SQL DE XEM DU LIEU THAT TRONG SSMS
+--------------------------------------------------------------------------------
+
+    USE FitTrackCloud;
+
+    SELECT * FROM dbo.Users;                       -- tai khoan Firebase da dung cloud
+
+    SELECT Id, UserId, CreatedAtUtc, DeviceName, IsAuto,
+           FoodLogCount, WorkoutLogCount, WeightEntryCount, WaterLogCount, LastLogDate
+    FROM dbo.Backups ORDER BY Id DESC;             -- cac snapshot
+
+    SELECT * FROM dbo.BackupFoodLogs WHERE BackupId = 1 ORDER BY LocalId;  -- an uong cua ban 1
+    SELECT * FROM dbo.BackupProfiles WHERE BackupId = 1;                   -- ho so cua ban 1
+    SELECT * FROM dbo.vw_UserCloudUsage;                                   -- thong ke theo nguoi dung
+
+
+--------------------------------------------------------------------------------
+ GHI CHU
+--------------------------------------------------------------------------------
+ - Cac phan hoi tren chi la mau; gia tri that (id, thoi gian...) se khac.
+ - Chi tiet day du hon: HUONG_DAN.md (muc 5 - API, muc 11 - Su co thuong gap).
+ - Chua kiem chung voi SQL Server va Firebase that trong moi truong soan thao;
+   neu gap loi, gui nguyen van thong bao loi de duoc chinh sua.
+================================================================================

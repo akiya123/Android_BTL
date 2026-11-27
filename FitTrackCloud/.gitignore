@@ -1,0 +1,10 @@
+bin/
+obj/
+publish/
+*.user
+.vs/
+.vscode/
+api.env
+*.log
+appsettings.Production.json
+appsettings.Development.json
